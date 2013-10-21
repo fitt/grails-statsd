@@ -25,6 +25,7 @@ log4j = {
 
 grails {
     statsd {
+        enabled = true
         host = "127.0.0.1"
         port = 8125
     }
