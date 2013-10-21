@@ -13,15 +13,15 @@ public class StatsdPoolFactory implements PoolableObjectFactory {
     }
 
     public StatsdClient makeObject() throws Exception {
-        return new StatsdClient(host, port);
+        return new StatsdClientImpl(host, port);
     }
 
     public void destroyObject(Object o) throws Exception {
-        ((StatsdClient) o).close();
+        ((StatsdClientImpl) o).close();
     }
 
     public boolean validateObject(Object o) {
-        return ((StatsdClient) o).isOpen();
+        return ((StatsdClientImpl) o).isOpen();
     }
 
     public void activateObject(Object o) throws Exception {

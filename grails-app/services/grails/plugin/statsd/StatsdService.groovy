@@ -1,18 +1,23 @@
 package grails.plugin.statsd
 
 class StatsdService {
-
+    static final NOOP_CLIENT = new NoopStatsdClient()
     static transactional = false
 
     def statsdPool
     def statsdTimingService
+    def grailsApplication
 
     private void withClient(Closure closure) {
-        StatsdClient client = (StatsdClient) statsdPool.borrowObject()
-        try {
-            closure.call(client)
-        } finally {
-            statsdPool.returnObject(client)
+        if (grailsApplication.config.grails?.statsd?.enabled) {
+            StatsdClient client = (StatsdClient) statsdPool.borrowObject()
+            try {
+                closure.call(client)
+            } finally {
+                statsdPool.returnObject(client)
+            }
+        } else {
+            closure.call(NOOP_CLIENT)
         }
     }
 
