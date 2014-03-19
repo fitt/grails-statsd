@@ -26,13 +26,11 @@ class StatsdService {
     }
 
     public def withTimer(String key, double sampleRate, Closure closure) {
-        log.debug("Start timer : ${key}")
         long startTime = statsdTimingService.currentTimeMillis()
         def result = closure()
         long finishTime = statsdTimingService.currentTimeMillis()
         long runTime = finishTime - startTime
         timing(key, runTime.toInteger(), sampleRate)
-        log.debug("End timer : ${key} : ${runTime}ms")
         return result
     }
 
